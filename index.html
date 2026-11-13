@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Group Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Форма авторизации / регистрации -->
+        <div id="auth-section" class="card">
+            <h2>Вход в чат</h2>
+            <div class="tabs">
+                <button id="tab-login" class="active">Вход</button>
+                <button id="tab-register">Регистрация</button>
+            </div>
+            
+            <form id="auth-form">
+                <div class="input-group">
+                    <label for="username">Имя пользователя</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" id="submit-btn" class="primary-btn">Войти</button>
+            </form>
+            <p id="auth-error" class="error"></p>
+        </div>
+
+        <!-- Секция чата (скрыта до авторизации) -->
+        <div id="chat-section" class="card hidden">
+            <header class="chat-header">
+                <h3>Групповой чат (<span id="current-user"></span>)</h3>
+                <button id="logout-btn" class="danger-btn">Выйти</button>
+            </header>
+            
+            <div id="messages" class="messages-container"></div>
+
+            <form id="chat-form" class="chat-input-form">
+                <input type="text" id="message-input" placeholder="Введите сообщение..." autocomplete="off" required>
+                <button type="submit" class="primary-btn">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
