@@ -1,6 +1,5 @@
-const API_URL = 'https://inai-col3.fishrungames.com/api'; // Проверьте точный путь по вашему Swagger для авторизации
+const API_URL = 'https://inai-col3.fishrungames.com/api';
 const WS_URL = 'wss://inai-col3.fishrungames.com/chat/';
-
 let isLoginMode = true;
 let socket = null;
 
@@ -14,7 +13,6 @@ const authError = document.getElementById('auth-error');
 const tabLogin = document.getElementById('tab-login');
 const tabRegister = document.getElementById('tab-register');
 const submitBtn = document.getElementById('submit-btn');
-
 const currentUserSpan = document.getElementById('current-user');
 const logoutBtn = document.getElementById('logout-btn');
 const messagesContainer = document.getElementById('messages');
@@ -44,8 +42,8 @@ authForm.addEventListener('submit', async (e) => {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();
 
-    // Эндпоинты регистрации и логина уточните по вашему Swagger (например, /auth/login/ и /auth/register/)
-    const endpoint = isLoginMode ? `${API_URL}/auth/login/` : `${API_URL}/auth/register/`;
+    // Исправленные эндпоинты под твой Swagger
+    const endpoint = isLoginMode ? `${API_URL}/login/` : `${API_URL}/register/`;
 
     try {
         const response = await fetch(endpoint, {
@@ -61,14 +59,12 @@ authForm.addEventListener('submit', async (e) => {
         }
 
         if (isLoginMode) {
-            // Сохраняем access токен (в зависимости от бэкенда это data.access или data.token)
             const accessToken = data.access || data.token;
             localStorage.setItem('access_token', accessToken);
             localStorage.setItem('username', username);
             
             startChat(accessToken, username);
         } else {
-            // После успешной регистрации сразу переключаем на вход или логиним
             alert('Регистрация успешна! Теперь войдите.');
             tabLogin.click();
         }
@@ -87,7 +83,6 @@ function startChat(token, username) {
 
     socket.onopen = () => {
         console.log('WebSocket соединение установлено. Отправка AUTH...');
-        // Шаг из задания: первое сообщение — AUTH с токеном
         const authMessage = {
             type: "AUTH",
             payload: { token: token }
@@ -144,7 +139,7 @@ logoutBtn.addEventListener('click', () => {
     passwordInput.value = '';
 });
 
-// Проверка при загрузке страницы: если токен уже есть, можно попробовать подключиться
+// Проверка при загрузке страницы
 window.addEventListener('DOMContentLoaded', () => {
     const savedToken = localStorage.getItem('access_token');
     const savedUsername = localStorage.getItem('username');
@@ -156,7 +151,7 @@ window.addEventListener('DOMContentLoaded', () => {
 function renderMessage(sender, text, timestamp) {
     const msgDiv = document.createElement('div');
     msgDiv.classList.add('message');
-    const timeStr = timestamp ? new Date(timestamp).toLocaleTimeString([], { hour: '2-D', minute: '2-digit' }) : '';
+    const timeStr = timestamp ? new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
     
     msgDiv.innerHTML = `<strong>${sender}</strong>: ${text} <span class="time">${timeStr}</span>`;
     messagesContainer.appendChild(msgDiv);
